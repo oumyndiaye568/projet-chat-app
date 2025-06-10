@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .chat-sidebar {
+    @apply w-1/4 bg-white border-r border-gray-200 h-screen;
+  }
+
+  .chat-header {
+    @apply bg-[#f0f2f5] p-4 flex items-center justify-between;
+  }
+
+  .chat-main {
+    @apply flex-1 bg-[#efeae2] flex flex-col h-screen;
+  }
+
+  .message-area {
+    @apply flex-1 p-4 overflow-y-auto;
+  }
+
+  .message-input {
+    @apply bg-[#f0f2f5] p-4 flex items-center gap-4;
+  }
+
+  .message-bubble-sent {
+    @apply bg-[#d9fdd3] text-black p-2 rounded-lg max-w-[60%] ml-auto mb-2;
+  }
+
+  .message-bubble-received {
+    @apply bg-white text-black p-2 rounded-lg max-w-[60%] mb-2;
+  }
+}
+
+
+

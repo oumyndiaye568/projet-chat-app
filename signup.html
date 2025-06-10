@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un compte - WhatsApp</title>
+    <link rel="stylesheet" href="src/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 flex justify-center items-center w-full h-svh">
+    <div class="container w-[490px] h-[600px] bg-black rounded shadow-2xl shadow-emerald-400 flex justify-center items-center flex-col gap-6">
+        <p class="text-white text-3xl">Créer un compte <i class="fa-brands fa-square-whatsapp text-green-500 text-3xl"></i></p>
+        
+        <div class="flex-row">
+            <label for="name" class="flex block text-sm font-medium text-white text-2xl">Nom</label>
+            <input type="text" id="name" class="w-[300px] mt-1 border border-gray-300 rounded-lg p-2 hover:border-green-500 transition-colors" placeholder="Entrez votre nom" required />
+        </div>
+
+        <div class="flex-row">
+            <label for="firstname" class="flex block text-sm font-medium text-white text-2xl">Prénom</label>
+            <input type="text" id="firstname" class="w-[300px] mt-1 border border-gray-300 rounded-lg p-2 hover:border-green-500 transition-colors" placeholder="Entrez votre prénom" required />
+        </div>
+
+        <!-- <div class="flex-row">
+            <label for="email" class="flex block text-sm font-medium text-white text-2xl">Email</label>
+            <input type="email" id="email" class="w-[300px] mt-1 border border-gray-300 rounded-lg p-2 hover:border-green-500 transition-colors" placeholder="Entrez votre email" required />
+        </div> -->
+
+        <div class="flex-row">
+            <label for="country" class="flex block text-sm font-medium text-white text-2xl">Pays</label>
+            <select id="country" class="w-[300px] mt-1 border border-gray-300 rounded-lg p-2 hover:border-green-500 transition-colors" required>
+                <option value="">Sélectionnez un pays</option>
+                <option value="+221">Sénégal 🇸🇳 (+221)</option>
+                <option value="+225">Côte d'Ivoire 🇨🇮 (+225)</option>
+                <option value="+33">France 🇫🇷 (+33)</option>
+                <option value="+237">Cameroun 🇨🇲 (+237)</option>
+                <option value="+223">Mali 🇲🇱 (+223)</option>
+                <option value="+226">Burkina Faso 🇧🇫 (+226)</option>
+            </select>
+        </div>
+
+        <div class="flex-row">
+            <label for="phone" class="flex block text-sm font-medium text-white text-2xl">Téléphone</label>
+            <div class="flex gap-2">
+                <span id="selectedCode" class="w-[60px] mt-1 bg-gray-100 border border-gray-300 rounded-lg p-2 text-center"></span>
+                <input type="tel" id="phone" class="w-[240px] mt-1 border border-gray-300 rounded-lg p-2 hover:border-green-500 transition-colors" placeholder="Numéro" required />
+            </div>
+        </div>
+
+        <button type="submit" class="w-[300px] bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:scale-105 transition-transform">
+            S'inscrire
+        </button>
+
+        <a href="index.html" class="text-white hover:text-green-400 transition-colors cursor-pointer">
+            Déjà un compte ? Se connecter
+        </a>
+    </div>
+
+    <script>
+        // Afficher automatiquement l'indicatif du pays sélectionné
+        const countrySelect = document.getElementById('country');
+        const selectedCode = document.getElementById('selectedCode');
+        
+        countrySelect.addEventListener('change', () => {
+            selectedCode.textContent = countrySelect.value;
+        });
+    </script>
+</body>
+</html>
