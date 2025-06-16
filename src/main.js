@@ -509,7 +509,7 @@ async function displayContacts() {
     contacts.sort((a, b) => a.firstname.localeCompare(b.firstname));
     
     contactsDiv.innerHTML = contacts.map(contact => `
-      <div class="contact-item flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" 
+      <div class="contact-item flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c] w-[500px]" 
            data-phone="${contact.phone}" 
            data-firstname="${contact.firstname}"
            data-lastname="${contact.lastname}">
