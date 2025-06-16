@@ -1,6 +1,10 @@
 import { route } from '../route'
 import './style.css'
 const app = document.getElementById('app')
+const API_URL=import.meta.env.VITE_API_URL
+console.log(import.meta.env.VITE_API_URL);
+
+
 
 function showError(message) {
   // Supprimer l'ancien message d'erreur s'il existe
@@ -69,7 +73,7 @@ export function afficherPageConnexion (){
 
       try {
         // Récupération de tous les utilisateurs
-        const response = await fetch('http://localhost:3000/users');
+        const response = await fetch(`${API_URL}/users`);
         const users = await response.json();
         
         console.log('Numéro recherché:', phone);
@@ -163,7 +167,7 @@ export function accOunt (){
 
       try {
         // Vérifier si le numéro existe déjà
-        const checkUser = await fetch(`http://localhost:3000/users?phone=${fullPhone}`);
+        const checkUser = await fetch(`${API_URL}/users?phone=${fullPhone}`);
         const existingUser = await checkUser.json();
 
         if (existingUser.length > 0) {
@@ -172,7 +176,7 @@ export function accOunt (){
         }
 
         // Créer le nouvel utilisateur
-        const response = await fetch('http://localhost:3000/users', {
+        const response = await fetch(`${API_URL}/users`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -223,7 +227,7 @@ export function accOunt (){
                 <svg fill="gray" width="30" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12,10a1,1,0,0,0-1,1v4a1,1,0,0,0,2,0V11A1,1,0,0,0,12,10ZM8,13a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V14A1,1,0,0,0,8,13ZM12,2A10,10,0,0,0,2,12a9.89,9.89,0,0,0,2.26,6.33l-2,2a1,1,0,0,0-.21,1.09A1,1,0,0,0,3,22h9A10,10,0,0,0,12,2Zm0,18H5.41l.93-.93a1,1,0,0,0,.3-.71,1,1,0,0,0-.3-.7A8,8,0,1,1,12,20ZM16,8a1,1,0,0,0-1,1v6a1,1,0,0,0,2,0V9A1,1,0,0,0,16,8Z"/>
                     </svg>
-                    <i class="bi bi-people text-[#808181] text-2xl"></i>
+                    <i class="bi bi-people text-[#808181] text-2xl cursor-pointer" id="groupMenuIcon"></i>
         </div>
         <div class="icons flex items-center  flex-col gap-16 w-[60pw] h-[150px]">
             <svg id="paramIcon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" class="cursor-pointer hover:opacity-75">
@@ -291,6 +295,67 @@ export function accOunt (){
       showNewDiscussion();
     });
   }
+
+  // Ajouter l'écouteur d'événement après le rendu du HTML
+  const groupIcon = document.getElementById('groupMenuIcon');
+  if (groupIcon) {
+    groupIcon.addEventListener('click', () => {
+      console.log('Icône cliquée'); // Pour déboguer
+      showGroupMenu();
+    });
+  }
+}
+
+function showOptionsMenu() {
+  const contentDiv = document.querySelector('.contact > div:last-child');
+  if (!contentDiv) return;
+
+  contentDiv.innerHTML = `
+    <div class="w-full h-full bg-[#161717]">
+      <div class="flex items-center gap-4 p-6 border-b border-[#2c2c2c]">
+        <i class="fas fa-arrow-left text-white cursor-pointer" id="backButton"></i>
+        <h2 class="text-white text-xl">Nouvelle discussion</h2>
+      </div>
+
+      <div class="menu-options">
+        <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" id="newGroupBtn">
+          <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+            <i class="fas fa-users text-white text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-white text-lg">Nouveau groupe</h3>
+            <p class="text-gray-400 text-sm">Créer un groupe de discussion</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" id="newContactBtn">
+          <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+            <i class="fas fa-user-plus text-white text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-white text-lg">Nouveau contact</h3>
+            <p class="text-gray-400 text-sm">Ajouter un nouveau contact</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Gérer les événements de clic
+  document.getElementById('backButton')?.addEventListener('click', () => {
+    contentDiv.innerHTML = '';
+    displayContacts();
+  });
+
+  document.getElementById('newGroupBtn')?.addEventListener('click', () => {
+    showCreateGroup();
+  });
+
+  document.getElementById('newContactBtn')?.addEventListener('click', () => {
+    ajoutContactGroup();
+  });
+
+  console.log('Menu options affiché'); // Pour le débogage
 }
 
 export function ajoutContactGroup() {
@@ -364,7 +429,7 @@ export function ajoutContactGroup() {
 
     try {
       // Déboguer: afficher tous les utilisateurs d'abord
-      const allUsersResponse = await fetch('http://localhost:3000/users');
+      const allUsersResponse = await fetch(`${API_URL}/users`);
       const allUsers = await allUsersResponse.json();
       console.log('Tous les utilisateurs:', allUsers);
       console.log('Numéro recherché:', fullPhone);
@@ -386,7 +451,7 @@ export function ajoutContactGroup() {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
       // Ajouter le contact directement
-      const addContactResponse = await fetch('http://localhost:3000/contacts', {
+      const addContactResponse = await fetch(`${API_URL}/contacts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -429,7 +494,7 @@ async function displayContacts() {
   const chatDiv = document.querySelector('.chat');
 
   try {
-    const response = await fetch(`http://localhost:3000/contacts?userId=${currentUser.id}`);
+    const response = await fetch(`${API_URL}/contacts?userId=${currentUser.id}`);
     const contacts = await response.json();
 
     if (contacts.length === 0) {
@@ -585,10 +650,9 @@ export function showParameters() {
   // Gérer le retour
   document.getElementById('backButton').addEventListener('click', () => {
     contactDiv.innerHTML = '';
-    displayContacts(); // Afficher à nouveau la liste des contacts
+    displayContacts(); 
   });
 
-  // Gérer la déconnexion
   document.getElementById('logoutButton').addEventListener('click', () => {
     localStorage.removeItem('currentUser');
     route('/connexion');
@@ -654,7 +718,6 @@ export function showNewDiscussion() {
     </div>
   `;
 
-  // Gérer les clics sur les options
   document.getElementById('newGroup').addEventListener('click', () => {
     showCreateGroup();
   });
@@ -675,7 +738,7 @@ export function showNewDiscussion() {
 // Nouvelle fonction pour créer un groupe
 function showCreateGroup() {
   const contentDiv = document.querySelector('.contact > div:last-child');
-
+  
   contentDiv.innerHTML = `
     <div class="w-full h-full bg-[#161717]">
       <div class="flex items-center gap-4 p-6 border-b border-[#2c2c2c]">
@@ -688,36 +751,183 @@ function showCreateGroup() {
           <div class="w-16 h-16 rounded-full bg-[#2c2c2c] flex items-center justify-center">
             <i class="fas fa-camera text-gray-400 text-xl"></i>
           </div>
-          <div class="flex-1">
-            <input type="text" 
-              class="w-full bg-transparent text-white text-lg border-b-2 border-green-500 focus:outline-none"
-              placeholder="Nom du groupe">
-          </div>
+          <input type="text" 
+            placeholder="Nom du groupe" 
+            class="flex-1 bg-transparent text-white border-b-2 border-green-500 p-2 focus:outline-none">
         </div>
 
-        <div class="mb-4">
-          <h3 class="text-white text-lg mb-2">Ajouter des participants</h3>
+        <div class="mt-4">
+          <p class="text-gray-400 mb-4">Participants:</p>
           <div class="relative">
-            <i class="fas fa-search text-gray-400 absolute left-4 top-3"></i>
+            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
             <input type="text" 
-              class="w-full bg-[#2D2E2E] text-white pl-12 pr-4 py-2 rounded-lg"
-              placeholder="Rechercher des contacts">
+              placeholder="Rechercher des contacts" 
+              class="w-full bg-[#2c2c2c] text-white p-2 pl-10 rounded-lg">
           </div>
         </div>
 
-        <div class="selected-contacts mb-4">
-          <!-- Les contacts sélectionnés s'afficheront ici -->
-        </div>
-
-        <div class="contacts-list">
-          <!-- La liste des contacts s'affichera ici -->
+        <div id="selectedContacts" class="mt-4 flex flex-wrap gap-2">
+          <!-- Les contacts sélectionnés apparaîtront ici -->
         </div>
       </div>
     </div>
   `;
 
-  // Gérer le retour
-  document.getElementById('backButton').addEventListener('click', () => {
-    showNewDiscussion();
+  document.getElementById('backButton')?.addEventListener('click', () => {
+    showAddMenu();
+  });
+}
+
+// Fonction pour charger les contacts
+async function loadContactsForGroup() {
+  const contactsList = document.getElementById('contactsList');
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const selectedContacts = new Set();
+
+  try {
+    const response = await fetch(`${API_URL}/contacts?userId=${currentUser.id}`);
+    const contacts = await response.json();
+
+    contacts.forEach(contact => {
+      const contactElement = document.createElement('div');
+      contactElement.className = 'flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]';
+      contactElement.innerHTML = `
+        <div class="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center">
+          <span class="text-white text-lg">${contact.firstname[0].toUpperCase()}</span>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-white">${contact.firstname} ${contact.lastname}</h3>
+          <p class="text-gray-400 text-sm">${contact.phone}</p>
+        </div>
+        <div class="checkbox w-6 h-6 border-2 border-green-500 rounded-full"></div>
+      `;
+
+      contactElement.addEventListener('click', () => {
+        const checkbox = contactElement.querySelector('.checkbox');
+        if (selectedContacts.has(contact.id)) {
+          selectedContacts.delete(contact.id);
+          checkbox.classList.remove('bg-green-500');
+        } else {
+          selectedContacts.add(contact.id);
+          checkbox.classList.add('bg-green-500');
+        }
+        updateSelectedContacts(Array.from(selectedContacts), contacts);
+      });
+
+      contactsList.appendChild(contactElement);
+    });
+  } catch (error) {
+    console.error('Erreur:', error);
+  }
+}
+
+function updateSelectedContacts(selectedIds, allContacts) {
+  const selectedContactsDiv = document.getElementById('selectedContacts');
+  selectedContactsDiv.innerHTML = selectedIds
+    .map(id => allContacts.find(c => c.id === id))
+    .map(contact => `
+      <div class="bg-[#2c2c2c] rounded-full px-3 py-1 flex items-center gap-2">
+        <span class="text-white">${contact.firstname}</span>
+        <i class="fas fa-times text-gray-400 cursor-pointer"></i>
+      </div>
+    `).join('');
+}
+
+function showAddMenu() {
+  const contentDiv = document.querySelector('.contact > div:last-child');
+  
+  contentDiv.innerHTML = `
+    <div class="w-full h-full bg-[#161717]">
+      <div class="flex items-center gap-4 p-6 border-b border-[#2c2c2c]">
+        <i class="fas fa-arrow-left text-white cursor-pointer" id="backButton"></i>
+        <h2 class="text-white text-xl">Nouvelle discussion</h2>
+      </div>
+
+      <div class="flex flex-col">
+        <!-- Option Nouveau groupe -->
+        <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" id="newGroupOption">
+          <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+            <i class="fas fa-users text-white text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-white">Nouveau groupe</h3>
+            <p class="text-gray-400 text-sm">Créer un groupe</p>
+          </div>
+        </div>
+
+        <!-- Option Nouveau contact -->
+        <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" id="newContactOption">
+          <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+            <i class="fas fa-user-plus text-white text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-white">Nouveau contact</h3>
+            <p class="text-gray-400 text-sm">Ajouter un contact</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Gérer les clics sur les options
+  document.getElementById('backButton')?.addEventListener('click', () => {
+    displayContacts();
+  });
+
+  document.getElementById('newGroupOption')?.addEventListener('click', () => {
+    showCreateGroup();
+  });
+
+  document.getElementById('newContactOption')?.addEventListener('click', () => {
+    ajoutContactGroup();
+  });
+}
+
+function showGroupMenu() {
+  console.log('Affichage du menu'); 
+  const contentDiv = document.querySelector('.contact > div:last-child');
+  if (!contentDiv) {
+    return;
+  }
+  contentDiv.innerHTML = `
+    <div class="w-full h-full bg-[#161717]">
+      <div class="flex items-center gap-4 p-6 border-b border-[#2c2c2c]">
+        <i class="fas fa-arrow-left text-white cursor-pointer" id="backToContacts"></i>
+        <h2 class="text-white text-xl">Nouvelle discussion</h2>
+      </div>
+
+      <div class="menu-options">
+        <div class="option-item flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer" id="createGroupBtn">
+          <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+            <i class="fas fa-users text-white text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-white">Nouveau groupe</h3>
+            <p class="text-gray-400 text-sm">Créer un groupe</p>
+          </div>
+        </div>
+        <div class="option-item flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer" id="addContactBtn">
+          <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+            <i class="fas fa-user-plus text-white text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-white">Nouveau contact</h3>
+            <p class="text-gray-400 text-sm">Ajouter un contact</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('backToContacts')?.addEventListener('click', () => {
+    displayContacts();
+  });
+
+  document.getElementById('createGroupBtn')?.addEventListener('click', () => {
+    showCreateGroup();
+  });
+
+  document.getElementById('addContactBtn')?.addEventListener('click', () => {
+    ajoutContactGroup();
   });
 }
