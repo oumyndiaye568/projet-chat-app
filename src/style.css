@@ -30,6 +30,26 @@
   .message-bubble-received {
     @apply bg-white text-black p-2 rounded-lg max-w-[60%] mb-2;
   }
+
+  .error-message {
+    animation: slideDown 0.5s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .error-message.opacity-0 {
+    transition: opacity 0.5s ease-out;
+    opacity: 0;
+  }
 }
 
 

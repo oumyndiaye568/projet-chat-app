@@ -1,0 +1,91 @@
+{
+  "users": [
+    {
+      "id": "c766",
+      "name": "ndiaye",
+      "firstname": "oumy",
+      "phone": "+221780000000",
+      "status": "Hey ! J'utilise WhatsApp",
+      "avatar": "",
+      "createdAt": "2025-06-15T13:44:35.866Z"
+    },
+    {
+      "id": "c405",
+      "name": "Bamba",
+      "firstname": "Ndiaye",
+      "phone": "+221775014627",
+      "status": "Hey ! J'utilise WhatsApp",
+      "avatar": "",
+      "createdAt": "2025-06-15T13:45:31.807Z"
+    },
+    {
+      "id": "a123",
+      "name": "ndiaye",
+      "firstname": "maman",
+      "phone": "+221770341229",
+      "status": "Hey ! J'utilise WhatsApp",
+      "avatar": "",
+      "createdAt": "2025-06-15T14:12:54.089Z"
+    },
+    {
+      "id": "f499",
+      "name": "ndiaye",
+      "firstname": "oumy",
+      "phone": "+221780000000",
+      "status": "Hey ! J'utilise WhatsApp",
+      "avatar": "",
+      "createdAt": "2025-06-15T15:45:42.538Z"
+    },
+    {
+      "id": "912c",
+      "name": "papa",
+      "firstname": "Ndiaye",
+      "phone": "+221785395774",
+      "status": "Hey ! J'utilise WhatsApp",
+      "avatar": "",
+      "createdAt": "2025-06-15T17:38:24.915Z"
+    }
+  ],
+  "contacts": [
+    {
+      "id": "5ba9",
+      "userId": "c405",
+      "firstname": "maman",
+      "lastname": "ndiaye",
+      "phone": "+221770341229",
+      "createdAt": "2025-06-15T17:32:37.842Z"
+    },
+    {
+      "id": "d213",
+      "userId": "912c",
+      "firstname": "papa",
+      "lastname": "ndiaye",
+      "phone": "+221785395774",
+      "createdAt": "2025-06-15T17:39:30.650Z"
+    },
+    {
+      "id": "c9bb",
+      "userId": "a123",
+      "firstname": "papa",
+      "lastname": "ndiaye",
+      "phone": "+221785395774",
+      "createdAt": "2025-06-15T18:13:17.147Z"
+    },
+    {
+      "id": "bad2",
+      "userId": "a123",
+      "firstname": "oumy",
+      "lastname": "ndiaye",
+      "phone": "+221775014627",
+      "createdAt": "2025-06-15T18:16:10.262Z"
+    },
+    {
+      "id": "2143",
+      "userId": "c405",
+      "firstname": "papa",
+      "lastname": "ndiaye",
+      "phone": "+221785395774",
+      "createdAt": "2025-06-15T18:55:48.438Z"
+    }
+  ]
+}
