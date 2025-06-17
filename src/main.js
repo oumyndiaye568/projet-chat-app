@@ -7,7 +7,6 @@ console.log(import.meta.env.VITE_API_URL);
 
 
 function showError(message) {
-  // Supprimer l'ancien message d'erreur s'il existe
   const oldError = document.querySelector('.error-message');
   if (oldError) {
     oldError.remove();
@@ -21,13 +20,10 @@ function showError(message) {
     <span>${message}</span>
   `;
 
-  // Ajouter au container au lieu du body
   const container = document.querySelector('.container');
   if (container) {
-    // Insérer le message au début du container
     container.insertBefore(errorDiv, container.firstChild);
 
-    // Supprimer après 3 secondes
     setTimeout(() => {
       errorDiv.classList.add('opacity-0');
       setTimeout(() => errorDiv.remove(), 500);
@@ -66,27 +62,23 @@ export function afficherPageConnexion (){
         return;
       }
 
-      // Format du numéro de téléphone
       if (!phone.startsWith('+')) {
         phone = '+' + phone;
       }
 
       try {
-        // Récupération de tous les utilisateurs
         const response = await fetch(`${API_URL}/users`);
         const users = await response.json();
         
         console.log('Numéro recherché:', phone);
         console.log('Utilisateurs disponibles:', users);
 
-        // Recherche de l'utilisateur par son numéro
         const user = users.find(u => u.phone === phone);
         
         if (user) {
           console.log('Utilisateur trouvé:', user);
           showError('Connexion réussie !');
           
-          // Stockage des informations de l'utilisateur
           localStorage.setItem('currentUser', JSON.stringify(user));
           
           setTimeout(() => {
@@ -109,7 +101,6 @@ export function afficherPageConnexion (){
             route('/accOunt'); 
           });
         }
-
 export function accOunt (){
   app.innerHTML=` <div class="container w-[490px] h-[600px] bg-black rounded shadow-2xl shadow-emerald-400 flex justify-center items-center flex-col gap-6">
         <p class="text-white text-3xl">Créer un compte <i class="fa-brands fa-square-whatsapp text-green-500 text-3xl"></i></p>
@@ -162,11 +153,9 @@ export function accOunt (){
         showError('Veuillez remplir tous les champs');
         return;
       }
-
       const fullPhone = country + phone;
 
       try {
-        // Vérifier si le numéro existe déjà
         const checkUser = await fetch(`${API_URL}/users?phone=${fullPhone}`);
         const existingUser = await checkUser.json();
 
@@ -174,8 +163,6 @@ export function accOunt (){
           showError('Ce numéro est déjà utilisé');
           return;
         }
-
-        // Créer le nouvel utilisateur
         const response = await fetch(`${API_URL}/users`, {
           method: 'POST',
           headers: {
@@ -194,7 +181,6 @@ export function accOunt (){
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
         showError('Compte créé avec succès !');
         
         setTimeout(() => {
@@ -215,7 +201,7 @@ export function accOunt (){
     app.innerHTML =`<div class="container flex w-[1500px] h-[900px]  bg-gray-950">
 
     <div class="barre flex justify-between   flex-col w-[80px] h-[900px] border-2 border-[#1D1F1F] bg-[#1D1F1F]">
-        <div class="icones flex flex-col items-center gap-4 w-[60pw] h-[300px] ">
+        <div class="icones  flex flex-col items-center gap-4 w-[60pw] h-[300px] ">
             <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="white" class="bi bi-chat-text-fill" viewBox="0 0 16 16">
                 <path d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M4.5 5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
               </svg>
@@ -238,7 +224,6 @@ export function accOunt (){
             </svg>
             <div class="w-[30px] h-[30px] rounded-full border-green-500 border-2"></div>
         </div>
-
     </div>
     <div class="contact flex items-center flex-col w-[500px] h-[900px] bg-[#161717] border-2 border-[#2c2c2c]">
         <div class= " flex flex-row   justify-between w-[490px] h-[50px]  items-center ">
@@ -254,7 +239,6 @@ export function accOunt (){
                 <input class="w-[450px] h-[20px] bg-[#2D2E2E] rounded-full border-2  border-gray-900 p-6 text-lg transition duration-200 hover:border-green-700 focus:outline-none" type="text" placeholder="Rechercher ou démarrer une discussion" >
                 </div>   
         </div>
-
             <div class=" flex  gap-2  flex-row w-[470px] h-[60Px] ">
                 <div class="  flex items-center  justify-center w-[100px] h-[40px] hover:bg-gray-800 border-[#2D2E2E] border-2 rounded-full">
                     <h3 class="text-[#797A7A]">Toutes</h3>
@@ -281,35 +265,29 @@ export function accOunt (){
       showParameters();
     });
   }
-
   const ajoutButton = document.getElementById('ajout');
   if (ajoutButton) {
     ajoutButton.addEventListener('click', () => {
       ajoutContactGroup();
     });
   }
-
   const chatIcon = document.querySelector('.bi-chat-text-fill');
   if (chatIcon) {
     chatIcon.addEventListener('click', () => {
       showNewDiscussion();
     });
   }
-
-  // Ajouter l'écouteur d'événement après le rendu du HTML
   const groupIcon = document.getElementById('groupMenuIcon');
   if (groupIcon) {
     groupIcon.addEventListener('click', () => {
-      console.log('Icône cliquée'); // Pour déboguer
+      console.log('Icône cliquée');
       showGroupMenu();
     });
   }
 }
-
 function showOptionsMenu() {
   const contentDiv = document.querySelector('.contact > div:last-child');
   if (!contentDiv) return;
-
   contentDiv.innerHTML = `
     <div class="w-full h-full bg-[#161717]">
       <div class="flex items-center gap-4 p-6 border-b border-[#2c2c2c]">
@@ -340,24 +318,18 @@ function showOptionsMenu() {
       </div>
     </div>
   `;
-
-  // Gérer les événements de clic
   document.getElementById('backButton')?.addEventListener('click', () => {
     contentDiv.innerHTML = '';
     displayContacts();
   });
-
   document.getElementById('newGroupBtn')?.addEventListener('click', () => {
     showCreateGroup();
   });
-
   document.getElementById('newContactBtn')?.addEventListener('click', () => {
     ajoutContactGroup();
   });
-
-  console.log('Menu options affiché'); // Pour le débogage
+  console.log('Menu options affiché'); 
 }
-
 export function ajoutContactGroup() {
   const contentDiv = document.querySelector('.contact > div:last-child');
 
@@ -371,14 +343,14 @@ export function ajoutContactGroup() {
       <form id="addContactForm" class="flex flex-col gap-4">
         <div>
           <label class="text-white mb-2 block">Prénom</label>
-          <input type="text" id="contactFirstname" required 
+          <input type="text" id="contactFirstname"  
             class="w-full bg-[#2D2E2E] text-white p-2 rounded-lg border border-gray-600 focus:border-green-500 focus:outline-none"
             placeholder="Entrez le prénom">
         </div>
 
         <div>
           <label class="text-white mb-2 block">Nom</label>
-          <input type="text" id="contactLastname" required 
+          <input type="text" id="contactLastname"  
             class="w-full bg-[#2D2E2E] text-white p-2 rounded-lg border border-gray-600 focus:border-green-500 focus:outline-none"
             placeholder="Entrez le nom">
         </div>
@@ -405,17 +377,14 @@ export function ajoutContactGroup() {
       </form>
     </div>
   `;
-
   const backButton = document.getElementById('backButton');
   backButton.addEventListener('click', () => {
     contentDiv.innerHTML = '';
-    displayContacts(); // Afficher la liste des contacts après le retour
+    displayContacts(); 
   });
-
   const form = document.getElementById('addContactForm');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-
     const firstname = document.getElementById('contactFirstname').value.trim();
     const lastname = document.getElementById('contactLastname').value.trim();
     const phone = document.getElementById('contactPhone').value.trim();
@@ -424,20 +393,15 @@ export function ajoutContactGroup() {
       showError('Veuillez remplir tous les champs');
       return;
     }
-
     const fullPhone = '+221' + phone;
-
     try {
-      // Déboguer: afficher tous les utilisateurs d'abord
       const allUsersResponse = await fetch(`${API_URL}/users`);
       const allUsers = await allUsersResponse.json();
       console.log('Tous les utilisateurs:', allUsers);
       console.log('Numéro recherché:', fullPhone);
-
-      // Vérifier si l'utilisateur existe en comparant les numéros exactement
       const userExists = allUsers.some(user => {
-        const userPhone = user.phone.replace(/\s+/g, ''); // Supprimer les espaces
-        const searchPhone = fullPhone.replace(/\s+/g, ''); // Supprimer les espaces
+        const userPhone = user.phone.replace(/\s+/g, ''); 
+        const searchPhone = fullPhone.replace(/\s+/g, ''); 
         console.log('Comparaison:', userPhone, searchPhone);
         return userPhone === searchPhone;
       });
@@ -446,11 +410,7 @@ export function ajoutContactGroup() {
         showError('Ce numéro n\'existe pas dans WhatsApp');
         return;
       }
-
-      // Récupérer l'utilisateur actuel
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-      // Ajouter le contact directement
       const addContactResponse = await fetch(`${API_URL}/contacts`, {
         method: 'POST',
         headers: {
@@ -473,8 +433,6 @@ export function ajoutContactGroup() {
       console.log('Contact ajouté:', newContact);
 
       showError('Contact ajouté avec succès !');
-
-      // Rafraîchir la liste des contacts
       setTimeout(() => {
         contentDiv.innerHTML = '';
         displayContacts();
@@ -486,13 +444,10 @@ export function ajoutContactGroup() {
     }
 });
 }
-
-// Fonction pour afficher les contacts
 async function displayContacts() {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
   const contactsDiv = document.querySelector('.contact > div:last-child');
   const chatDiv = document.querySelector('.chat');
-
   try {
     const response = await fetch(`${API_URL}/contacts?userId=${currentUser.id}`);
     const contacts = await response.json();
@@ -505,9 +460,7 @@ async function displayContacts() {
       `;
       return;
     }
-
     contacts.sort((a, b) => a.firstname.localeCompare(b.firstname));
-    
     contactsDiv.innerHTML = contacts.map(contact => `
       <div class="contact-item flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c] w-[500px]" 
            data-phone="${contact.phone}" 
@@ -522,17 +475,12 @@ async function displayContacts() {
         </div>
       </div>
     `).join('');
-
-    // Ajouter les écouteurs d'événements pour chaque contact
     const contactItems = document.querySelectorAll('.contact-item');
     contactItems.forEach(item => {
       item.addEventListener('click', () => {
-        // Récupérer les données du contact
         const firstname = item.dataset.firstname;
         const lastname = item.dataset.lastname;
         const phone = item.dataset.phone;
-
-        // Mettre à jour l'en-tête du chat
         chatDiv.innerHTML = `
           <div class="flex flex-col h-full">
             <div class="chat-header w-full h-[70px] bg-[#202020] border-b border-[#2c2c2c] flex items-center px-4">
@@ -561,22 +509,18 @@ async function displayContacts() {
             </div>
           </div>
         `;
-
-        // Ajouter la classe active au contact sélectionné
         contactItems.forEach(c => c.classList.remove('bg-[#2c2c2c]'));
         item.classList.add('bg-[#2c2c2c]');
       });
     });
-
   } catch (error) {
     console.error('Erreur:', error);
     showError('Erreur lors du chargement des contacts');
   }
 }
-
-// Ajouter la fonction pour afficher les paramètres
 export function showParameters() {
   const contactDiv = document.querySelector('.contact > div:last-child');
+  const chatDiv = document.querySelector('.chat');
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   contactDiv.innerHTML = `
@@ -585,7 +529,6 @@ export function showParameters() {
         <i class="fas fa-arrow-left text-white cursor-pointer" id="backButton"></i>
         <h2 class="text-white text-xl">Paramètres</h2>
       </div>
-
       <div class="flex items-center gap-4 p-6 border-b border-[#2c2c2c]">
         <div class="w-14 h-14 rounded-full bg-gray-600 flex items-center justify-center">
           <span class="text-white text-2xl">${currentUser.firstname[0].toUpperCase()}</span>
@@ -595,7 +538,6 @@ export function showParameters() {
           <p class="text-gray-400">${currentUser.status || "Hey ! J'utilise WhatsApp"}</p>
         </div>
       </div>
-
       <div class="menu-options">
         <div class="flex items-center gap-4 p-6 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]">
           <div class="w-10 h-10 rounded-lg bg-[#2c2c2c] flex items-center justify-center">
@@ -637,7 +579,7 @@ export function showParameters() {
           </div>
         </div>
 
-        <div class="flex items-center gap-4 p-6 hover:bg-[#2c2c2c] cursor-pointer text-red-500" id="logoutButton">
+        <div class="flex items-center gap-4 p-6 hover:bg-[#2c2c2c] cursor-pointer text-red-500" id="logoutBtn">
           <div class="w-10 h-10 rounded-lg bg-[#2c2c2c] flex items-center justify-center">
             <i class="fas fa-sign-out-alt"></i>
           </div>
@@ -646,21 +588,47 @@ export function showParameters() {
       </div>
     </div>
   `;
+  chatDiv.innerHTML = `
+    <div class="flex flex-col h-full">
+      <div class="chat-header w-full h-[70px] bg-[#202020] border-b border-[#2c2c2c] flex items-center px-4">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center">
+            <i class="fas fa-cog text-white text-xl"></i>
+          </div>
+          <div>
+            <h3 class="text-white text-lg">Paramètres</h3>
+            <p class="text-gray-400 text-sm">Configurez votre compte</p>
+          </div>
+        </div>
+      </div>
 
-  // Gérer le retour
+      <div class="chat-messages flex-1 overflow-y-auto p-4 bg-[#161717] flex items-center justify-center">
+        <div class="text-center">
+          <i class="fas fa-cog text-gray-600 text-6xl mb-4"></i>
+          <p class="text-gray-400">Gérez vos paramètres de compte, de confidentialité et de sécurité</p>
+        </div>
+      </div>
+    </div>
+  `;
   document.getElementById('backButton').addEventListener('click', () => {
-    contactDiv.innerHTML = '';
-    displayContacts(); 
-  });
-
-  document.getElementById('logoutButton').addEventListener('click', () => {
-    localStorage.removeItem('currentUser');
-    route('/connexion');
+    displayContacts();
+    resetChatView();
   });
 }
-
+function resetChatView() {
+  const chatDiv = document.querySelector('.chat');
+  chatDiv.innerHTML = `
+    <div class="flex items-center justify-center h-full">
+      <div class="text-center">
+        <i class="fas fa-comments text-gray-600 text-6xl mb-4"></i>
+        <p class="text-gray-400">Sélectionnez une conversation pour commencer à discuter</p>
+      </div>
+    </div>
+  `;
+}
 export function showNewDiscussion() {
   const contentDiv = document.querySelector('.contact > div:last-child');
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   contentDiv.innerHTML = `
     <div class="w-full h-full bg-[#161717]">
@@ -673,14 +641,14 @@ export function showNewDiscussion() {
         <div class="relative">
           <i class="fas fa-search text-gray-400 absolute left-4 top-3"></i>
           <input type="text" 
+            id="searchContacts"
             class="w-full bg-[#161717] text-white pl-12 pr-4 py-2 rounded-lg"
-            placeholder="Rechercher un nom ou un numéro">
+            placeholder="Rechercher un contact">
         </div>
       </div>
 
       <div class="menu-options">
-        <!-- Option Nouveau groupe -->
-        <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" id="newGroup">
+        <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" id="newGroupBtn">
           <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
             <i class="fas fa-users text-white text-xl"></i>
           </div>
@@ -689,8 +657,7 @@ export function showNewDiscussion() {
           </div>
         </div>
 
-        <!-- Option Nouveau contact -->
-        <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" id="newContact">
+        <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" id="newContactBtn">
           <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
             <i class="fas fa-user-plus text-white text-xl"></i>
           </div>
@@ -699,235 +666,96 @@ export function showNewDiscussion() {
           </div>
         </div>
 
-        <!-- Option Nouvelle communauté -->
-        <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" id="newCommunity">
-          <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
-            <i class="fas fa-users-gear text-white text-xl"></i>
-          </div>
-          <div>
-            <h3 class="text-white text-lg">Nouvelle communauté</h3>
-          </div>
-        </div>
-
-        <!-- Liste des contacts -->
-        <div class="mt-4">
-          <h4 class="text-gray-500 px-4 py-2">Contacts sur WhatsApp</h4>
-          <div id="contactsList"></div>
+        <div id="contactsList" class="mt-4">
+          <!-- Les contacts seront ajoutés ici -->
         </div>
       </div>
     </div>
   `;
 
-  document.getElementById('newGroup').addEventListener('click', () => {
-    showCreateGroup();
-  });
+  // Charger les contacts
+  loadContacts();
 
-  document.getElementById('newContact').addEventListener('click', () => {
-    ajoutContactGroup();
-  });
-
-  document.getElementById('backButton').addEventListener('click', () => {
-    contentDiv.innerHTML = '';
+  // Gérer les événements
+  document.getElementById('backButton')?.addEventListener('click', () => {
     displayContacts();
   });
 
-  // Afficher les contacts
-  displayContactsList();
-}
+  document.getElementById('newGroupBtn')?.addEventListener('click', () => {
+    showCreateGroup();
+  });
 
-// Nouvelle fonction pour créer un groupe
-function showCreateGroup() {
-  const contentDiv = document.querySelector('.contact > div:last-child');
-  
-  contentDiv.innerHTML = `
-    <div class="w-full h-full bg-[#161717]">
-      <div class="flex items-center gap-4 p-6 border-b border-[#2c2c2c]">
-        <i class="fas fa-arrow-left text-white cursor-pointer" id="backButton"></i>
-        <h2 class="text-white text-xl">Nouveau groupe</h2>
-      </div>
-
-      <div class="p-6">
-        <div class="flex items-center gap-4 mb-6">
-          <div class="w-16 h-16 rounded-full bg-[#2c2c2c] flex items-center justify-center">
-            <i class="fas fa-camera text-gray-400 text-xl"></i>
-          </div>
-          <input type="text" 
-            placeholder="Nom du groupe" 
-            class="flex-1 bg-transparent text-white border-b-2 border-green-500 p-2 focus:outline-none">
-        </div>
-
-        <div class="mt-4">
-          <p class="text-gray-400 mb-4">Participants:</p>
-          <div class="relative">
-            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-            <input type="text" 
-              placeholder="Rechercher des contacts" 
-              class="w-full bg-[#2c2c2c] text-white p-2 pl-10 rounded-lg">
-          </div>
-        </div>
-
-        <div id="selectedContacts" class="mt-4 flex flex-wrap gap-2">
-          <!-- Les contacts sélectionnés apparaîtront ici -->
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('backButton')?.addEventListener('click', () => {
-    showAddMenu();
+  document.getElementById('newContactBtn')?.addEventListener('click', () => {
+    ajoutContactGroup();
   });
 }
 
-// Fonction pour charger les contacts
-async function loadContactsForGroup() {
+// Fonction pour charger et afficher les contacts
+async function loadContacts() {
   const contactsList = document.getElementById('contactsList');
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  const selectedContacts = new Set();
 
   try {
     const response = await fetch(`${API_URL}/contacts?userId=${currentUser.id}`);
     const contacts = await response.json();
 
-    contacts.forEach(contact => {
-      const contactElement = document.createElement('div');
-      contactElement.className = 'flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]';
-      contactElement.innerHTML = `
+    contacts.sort((a, b) => a.firstname.localeCompare(b.firstname));
+    
+    contactsList.innerHTML = contacts.map(contact => `
+      <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]">
         <div class="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center">
           <span class="text-white text-lg">${contact.firstname[0].toUpperCase()}</span>
         </div>
-        <div class="flex-1">
+        <div>
           <h3 class="text-white">${contact.firstname} ${contact.lastname}</h3>
           <p class="text-gray-400 text-sm">${contact.phone}</p>
         </div>
-        <div class="checkbox w-6 h-6 border-2 border-green-500 rounded-full"></div>
-      `;
-
-      contactElement.addEventListener('click', () => {
-        const checkbox = contactElement.querySelector('.checkbox');
-        if (selectedContacts.has(contact.id)) {
-          selectedContacts.delete(contact.id);
-          checkbox.classList.remove('bg-green-500');
-        } else {
-          selectedContacts.add(contact.id);
-          checkbox.classList.add('bg-green-500');
-        }
-        updateSelectedContacts(Array.from(selectedContacts), contacts);
-      });
-
-      contactsList.appendChild(contactElement);
-    });
-  } catch (error) {
-    console.error('Erreur:', error);
-  }
-}
-
-function updateSelectedContacts(selectedIds, allContacts) {
-  const selectedContactsDiv = document.getElementById('selectedContacts');
-  selectedContactsDiv.innerHTML = selectedIds
-    .map(id => allContacts.find(c => c.id === id))
-    .map(contact => `
-      <div class="bg-[#2c2c2c] rounded-full px-3 py-1 flex items-center gap-2">
-        <span class="text-white">${contact.firstname}</span>
-        <i class="fas fa-times text-gray-400 cursor-pointer"></i>
       </div>
     `).join('');
-}
 
-function showAddMenu() {
-  const contentDiv = document.querySelector('.contact > div:last-child');
-  
-  contentDiv.innerHTML = `
-    <div class="w-full h-full bg-[#161717]">
-      <div class="flex items-center gap-4 p-6 border-b border-[#2c2c2c]">
-        <i class="fas fa-arrow-left text-white cursor-pointer" id="backButton"></i>
-        <h2 class="text-white text-xl">Nouvelle discussion</h2>
-      </div>
-
-      <div class="flex flex-col">
-        <!-- Option Nouveau groupe -->
-        <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" id="newGroupOption">
-          <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
-            <i class="fas fa-users text-white text-xl"></i>
-          </div>
-          <div>
-            <h3 class="text-white">Nouveau groupe</h3>
-            <p class="text-gray-400 text-sm">Créer un groupe</p>
-          </div>
-        </div>
-
-        <!-- Option Nouveau contact -->
-        <div class="flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer border-b border-[#2c2c2c]" id="newContactOption">
-          <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
-            <i class="fas fa-user-plus text-white text-xl"></i>
-          </div>
-          <div>
-            <h3 class="text-white">Nouveau contact</h3>
-            <p class="text-gray-400 text-sm">Ajouter un contact</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Gérer les clics sur les options
-  document.getElementById('backButton')?.addEventListener('click', () => {
-    displayContacts();
-  });
-
-  document.getElementById('newGroupOption')?.addEventListener('click', () => {
-    showCreateGroup();
-  });
-
-  document.getElementById('newContactOption')?.addEventListener('click', () => {
-    ajoutContactGroup();
-  });
-}
-
-function showGroupMenu() {
-  console.log('Affichage du menu'); 
-  const contentDiv = document.querySelector('.contact > div:last-child');
-  if (!contentDiv) {
-    return;
+  } catch (error) {
+    console.error('Erreur lors du chargement des contacts:', error);
   }
-  contentDiv.innerHTML = `
-    <div class="w-full h-full bg-[#161717]">
-      <div class="flex items-center gap-4 p-6 border-b border-[#2c2c2c]">
-        <i class="fas fa-arrow-left text-white cursor-pointer" id="backToContacts"></i>
-        <h2 class="text-white text-xl">Nouvelle discussion</h2>
-      </div>
-
-      <div class="menu-options">
-        <div class="option-item flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer" id="createGroupBtn">
-          <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
-            <i class="fas fa-users text-white text-xl"></i>
-          </div>
-          <div>
-            <h3 class="text-white">Nouveau groupe</h3>
-            <p class="text-gray-400 text-sm">Créer un groupe</p>
-          </div>
-        </div>
-        <div class="option-item flex items-center gap-4 p-4 hover:bg-[#2c2c2c] cursor-pointer" id="addContactBtn">
-          <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
-            <i class="fas fa-user-plus text-white text-xl"></i>
-          </div>
-          <div>
-            <h3 class="text-white">Nouveau contact</h3>
-            <p class="text-gray-400 text-sm">Ajouter un contact</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('backToContacts')?.addEventListener('click', () => {
-    displayContacts();
-  });
-
-  document.getElementById('createGroupBtn')?.addEventListener('click', () => {
-    showCreateGroup();
-  });
-
-  document.getElementById('addContactBtn')?.addEventListener('click', () => {
-    ajoutContactGroup();
-  });
 }
+export function handleLogout() {
+  try {
+    console.log('Déconnexion en cours...'); // Pour déboguer
+    localStorage.removeItem('currentUser'); // Supprimer l'utilisateur
+    window.location.href = '/'; // Redirection vers la page d'accueil
+  } catch (error) {
+    console.error('Erreur lors de la déconnexion:', error);
+    alert('Une erreur est survenue lors de la déconnexion');
+  }
+}
+export const messageService = {
+  async sendMessage(senderId, receiverId, content) {
+    try {
+      const response = await fetch('http://localhost:3000/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          senderId,
+          receiverId,
+          content,
+          timestamp: new Date().toISOString()
+        })
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi du message:', error);
+      throw error;
+    }
+  },
+
+  async getMessages(senderId, receiverId) {
+    try {
+      const response = await fetch(`http://localhost:3000/messages?senderId=${senderId}&receiverId=${receiverId}`);
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur lors de la récupération des messages:', error);
+      throw error;
+    }
+  }
+};
